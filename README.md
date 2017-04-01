@@ -1,12 +1,12 @@
 # lisk-pool
 
-##installation 
+## installation 
 
     virtualenv env
     source env/bin/activate
     pip install -r requirements.txt
 
-##configuration
+## configuration
 
 In main.py update host and pbKey variables
 
