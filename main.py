@@ -1,19 +1,21 @@
-import requests, json, datetime
+import requests, json, datetime,logging
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client.lisk_pool
 
-host = 'http://<ip/domain>:7000'
+logging.basicConfig(format='[%(asctime)s] %(message)s', filename='logger.log', level=logging.INFO)
+
+host = 'http://<ip/pool-domain>:7000'
 endpoint = '/api/delegates/voters'
 params = '?publicKey='
-pub_key = '<pool pub keys>'
+pub_key = '<pub-key>'
 
 r = requests.get(host+endpoint+params+pub_key)
 
 voters = json.loads(r.text)['accounts']
 
 for v in voters:
-    a = db.voters.update(
+    db.voters.update(
         {'address': v['address']},
         {
 
@@ -28,3 +30,5 @@ for v in voters:
 
         },
         True)
+    info_str = "{} stored/updated".format(v['username'])
+    logging.info(info_str)
